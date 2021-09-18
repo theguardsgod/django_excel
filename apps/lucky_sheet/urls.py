@@ -1,0 +1,34 @@
+"""luckysheet_obj URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/3.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+
+from django.contrib import admin
+from django.urls import path, re_path
+from django.conf.urls import url, include
+from lucky_sheet.views import IndexView, LuckySheetIndex, LuckySheetLoadUrl, luckysheet_update_url
+from lucky_sheet.views import LuckySheetSaveDb, LuckySheetLoadGridKey
+from django.conf import settings
+from django.views import static
+from django.conf.urls.static import static as media_static
+
+urlpatterns = [
+    re_path(r'^$', IndexView, name='index_view'),  # 主页,测试使用
+    re_path(r'^luckysheetindex/$', LuckySheetIndex.as_view(), name="lucky_sheet_index"),  # luckysheet主页
+    re_path(r'^luckysheetloadurl/', LuckySheetLoadUrl.as_view(), name="lucky_sheet_loadurl"),  # lucky_sheet_loadurl
+    re_path(r'^luckysheetupdateurl', luckysheet_update_url, name="luckysheet_update_url"),  # lucky_sheet_loadurl
+    re_path(r'^luckysheetsavedb/', LuckySheetSaveDb.as_view(), name="luckysheet_save_db"),  # luckysheet_save_db
+    re_path(r'^luckysheetloadgridkey/', LuckySheetLoadGridKey.as_view(), name="luckysheet_load_gridkey"),  # luckysheet_save_db
+    re_path(r'^luckysheetindex/static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT}, name='static'),
+]

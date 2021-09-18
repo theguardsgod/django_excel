@@ -1,0 +1,2 @@
+def authcode():
+    return None
